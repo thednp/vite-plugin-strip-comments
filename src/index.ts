@@ -10,12 +10,12 @@ export type StripCommentsOutput = {
  * @default 'istanbul'
  */
 export type StripCommentsConfig = {
-  keep: "none" | "legal" | "istanbul";
+  type: "none" | "keep-legal" | "istanbul";
 };
 
-const replacements: Record<"none" | "legal" | "istanbul", RegExp> = {
+const replacements: Record<"none" | "keep-legal" | "istanbul", RegExp> = {
   none: /((?=\/\*).*\*\/)|((?=((?<!\:)\/\/)).*(?=\n))/gm,
-  legal:
+  "keep-legal":
     /(((?=(\/\*[\s\S](?!(\@legal|\@license)))).*\*\/)|((?=((?<!\:)\/\/[\s\S](?!(\@legal|\@license)))).*(?=\n)))/gm,
   istanbul:
     /(((?=(\/\*[\s\S]istanbul)).*\*\/)|((?=(\/\/[\s\S]istanbul)).*(?=\n)))/gm,
@@ -28,9 +28,9 @@ const stripComments = (cfg?: Partial<StripCommentsConfig>) => {
     transform(code: string, id?: string) {
       if (code?.length && (!id?.length || !id.includes("node_modules"))) {
         const replacement = ["none", "legal", "istanbul"].some((x) =>
-            cfg?.keep === x
+            cfg?.type === x
           )
-          ? replacements[cfg?.keep as StripCommentsConfig["keep"]]
+          ? replacements[cfg?.type as StripCommentsConfig["type"]]
           : replacements["istanbul"];
         return {
           code: code.replace(replacement, ""),

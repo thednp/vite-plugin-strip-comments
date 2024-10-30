@@ -37,14 +37,21 @@ import stripComments from 'vite-plugin-strip-comments';
 export default defineConfig({
   plugins: [
     // ... other plugins
-    stripComments(),
+    stripComments({ type: 'istanbul' }),
   ],
 });
 ```
 
+**Options**
+
+* type: "none" | "keep-legal" | "istanbul" (default) - changes the behavior of the transform function
+  * **none** removes all comments
+  * **keep-legal** remove all commments except those which contain `@legal` or `@license`, a very good practice to allow open source to shine yes?
+  * **istanbul** (default) only remove comments that target istanbul code coverage instrumentation (EG: `/* istanbul ignore else @preserve */`)
+
 ## Contributions
-* Found a problem, report the problem. Thank you
-* Found a fix? Clone, install, apply fix and commit. Thank you
+* Found a problem, [report](https://github.com/thednp/vite-plugin-strip-comments/issues) the problem. Thank you!
+* Found a fix? Clone, install, apply fix and commit. Thank you!
 
 
 ## License

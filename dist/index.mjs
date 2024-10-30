@@ -1,6 +1,6 @@
 const s = {
   none: /((?=\/\*).*\*\/)|((?=((?<!\:)\/\/)).*(?=\n))/gm,
-  legal: /(((?=(\/\*[\s\S](?!(\@legal|\@license)))).*\*\/)|((?=((?<!\:)\/\/[\s\S](?!(\@legal|\@license)))).*(?=\n)))/gm,
+  "keep-legal": /(((?=(\/\*[\s\S](?!(\@legal|\@license)))).*\*\/)|((?=((?<!\:)\/\/[\s\S](?!(\@legal|\@license)))).*(?=\n)))/gm,
   istanbul: /(((?=(\/\*[\s\S]istanbul)).*\*\/)|((?=(\/\/[\s\S]istanbul)).*(?=\n)))/gm
 }, m = (e) => ({
   name: "vite-plugin-strip-comments",
@@ -8,8 +8,8 @@ const s = {
   transform(n, l) {
     if (n?.length && (!l?.length || !l.includes("node_modules"))) {
       const t = ["none", "legal", "istanbul"].some(
-        (a) => e?.keep === a
-      ) ? s[e?.keep] : s.istanbul;
+        (a) => e?.type === a
+      ) ? s[e?.type] : s.istanbul;
       return {
         code: n.replace(t, ""),
         map: null

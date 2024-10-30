@@ -27,7 +27,7 @@ describe("vite-plugin-strip-comments test", () => {
     );
     expect(plugin.transform(testSample)?.code).to.have.length.above(0);
     // expect(plugin.transform(testSample)).to.be.true;
-    const pluginWithConfig = stripComments({ keep: "none" });
+    const pluginWithConfig = stripComments({ type: "none" });
     expect(pluginWithConfig.transform(testSample)?.code).to.have.length.above(
       0,
     );

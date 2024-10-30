@@ -11,7 +11,7 @@ export default stripComments;
  * @default 'istanbul'
  */
 declare type StripCommentsConfig = {
-    keep: "none" | "legal" | "istanbul";
+    type: "none" | "keep-legal" | "istanbul";
 };
 
 export { }
