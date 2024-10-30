@@ -24,8 +24,9 @@ const replacements: Record<"none" | "keep-legal" | "istanbul", RegExp> = {
 const stripComments = (cfg?: Partial<StripCommentsConfig>) => {
   return {
     name: "vite-plugin-strip-comments",
-    /* @ts-expect-error */
+    /* @ts-expect-error - it's just how Vite plugins work */
     transform(code: string, id?: string) {
+      /* istanbul ignore else @preserve */
       if (code?.length && (!id?.length || !id.includes("node_modules"))) {
         const replacement = ["none", "legal", "istanbul"].some((x) =>
             cfg?.type === x

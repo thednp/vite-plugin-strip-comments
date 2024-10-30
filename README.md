@@ -8,7 +8,7 @@
 [![vitest version](https://img.shields.io/badge/vitest-2.1.4-brightgreen)](https://vitest.dev/)
 [![vite version](https://img.shields.io/badge/vite-5.4.10-brightgreen)](https://github.com/vitejs)
 
-A simple Vite plugin for stripping comments in your production code. Some comments just don't get removed no matter what minify options you set. Also keep in mind this is experimental, so **use with caution**.
+A simple Vite plugin for stripping comments in your production code. Some comments just don't get removed no matter what minify options you set, especially `/* istanbul ignore */` flags. Also keep in mind this is experimental, the configuration doesn't work properly, it always removes ALL comments, so **use with caution**.
 
 ## Install
 

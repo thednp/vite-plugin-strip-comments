@@ -4,7 +4,7 @@ const s = {
   istanbul: /(((?=(\/\*[\s\S]istanbul)).*\*\/)|((?=(\/\/[\s\S]istanbul)).*(?=\n)))/gm
 }, m = (e) => ({
   name: "vite-plugin-strip-comments",
-  /* @ts-expect-error */
+  /* @ts-expect-error - it's just how Vite plugins work */
   transform(n, l) {
     if (n?.length && (!l?.length || !l.includes("node_modules"))) {
       const t = ["none", "legal", "istanbul"].some(

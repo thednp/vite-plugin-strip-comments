@@ -22,6 +22,8 @@ requestAnimationFrame(console.log("test"));
 describe("vite-plugin-strip-comments test", () => {
   it("strip'em all", () => {
     const plugin = stripComments();
+    // @ts-expect-error - this is for testing purpose
+    expect(plugin.transform()?.code).to.be.undefined;
     expect(plugin.transform(testSample, "some/url")?.code).to.have.length.above(
       0,
     );

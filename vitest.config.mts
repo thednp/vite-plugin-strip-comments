@@ -1,4 +1,5 @@
 import { defineConfig } from "vitest/config";
+import stripComments from './src/index'
 
 export default defineConfig({
   optimizeDeps: {
@@ -9,7 +10,7 @@ export default defineConfig({
   esbuild: {
     legalComments: 'inline',
   },
-  plugins: [],
+  plugins: [stripComments()],
   build: {
     minify: 'esbuild',
   },

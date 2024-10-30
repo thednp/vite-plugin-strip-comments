@@ -11,9 +11,9 @@ const fileName = {
 
 export default defineConfig({
   base: './',
-  // esbuild: {
-  //   legalComments: 'none',
-  // },
+  esbuild: {
+    legalComments: 'none',
+  },
   plugins: [
     dts({
       outDir: 'dist',
