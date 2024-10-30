@@ -1,2 +1,2 @@
-"use strict";function e(){const t=/((?=\/\*)([\s\S]*?)\*\/)|((?=\/\/)([\s\S]*?)(?=\n))/gmi;return{name:"vite-plugin-strip-comments",transform(n){return{code:n.replace(t,""),map:null}}}}module.exports=e;
+"use strict";const l={none:/((?=\/\*).*\*\/)|((?=((?<!\:)\/\/)).*(?=\n))/gm,legal:/(((?=(\/\*[\s\S](?!(\@legal|\@license)))).*\*\/)|((?=((?<!\:)\/\/[\s\S](?!(\@legal|\@license)))).*(?=\n)))/gm,istanbul:/(((?=(\/\*[\s\S]istanbul)).*\*\/)|((?=(\/\/[\s\S]istanbul)).*(?=\n)))/gm},m=e=>({name:"vite-plugin-strip-comments",transform(n,s){if(n?.length&&(!s?.length||!s.includes("node_modules"))){const t=["none","legal","istanbul"].some(a=>e?.keep===a)?l[e?.keep]:l.istanbul;return{code:n.replace(t,""),map:null}}}});module.exports=m;
 //# sourceMappingURL=index.cjs.map

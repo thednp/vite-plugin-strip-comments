@@ -1,21 +1,23 @@
-function e() {
-  const n = /((?=\/\*)([\s\S]*?)\*\/)|((?=\/\/)([\s\S]*?)(?=\n))/gmi;
-  return {
-    name: "vite-plugin-strip-comments",
-    transform(t) {
+const s = {
+  none: /((?=\/\*).*\*\/)|((?=((?<!\:)\/\/)).*(?=\n))/gm,
+  legal: /(((?=(\/\*[\s\S](?!(\@legal|\@license)))).*\*\/)|((?=((?<!\:)\/\/[\s\S](?!(\@legal|\@license)))).*(?=\n)))/gm,
+  istanbul: /(((?=(\/\*[\s\S]istanbul)).*\*\/)|((?=(\/\/[\s\S]istanbul)).*(?=\n)))/gm
+}, m = (e) => ({
+  name: "vite-plugin-strip-comments",
+  /* @ts-expect-error */
+  transform(n, l) {
+    if (n?.length && (!l?.length || !l.includes("node_modules"))) {
+      const t = ["none", "legal", "istanbul"].some(
+        (a) => e?.keep === a
+      ) ? s[e?.keep] : s.istanbul;
       return {
-        // code: text.replace(/((?=\/\*)([\s\S]*?)\*\/)|((?=\/\/)([\s\S*?])\n)/gm, ""), // working with all
-        // (^(?=\/\*)(?!(?!(legal|license))).*?\*\/$)|(^(?=\/\/)(?!(?=(legal|license))).*?\n$)
-        // ^(?=\/\*|\/\/).*(?!legal|license).*(?=(\*\/|\n.+))$
-        // code: text.replace(/((?=\/\*)(?!legal)([\s\S]*?)\*\/)|((?=\/\/)(?!legal)([\s\S])\n)/g, ""),
-        // code: text.replace(/^(?=\/\*|\/\/).*(?!(legal|license)).*(?=(\*\/|\n.+))$/g, ""),
-        code: t.replace(n, ""),
+        code: n.replace(t, ""),
         map: null
       };
     }
-  };
-}
+  }
+});
 export {
-  e as default
+  m as default
 };
 //# sourceMappingURL=index.mjs.map

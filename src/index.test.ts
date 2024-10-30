@@ -22,12 +22,17 @@ requestAnimationFrame(console.log("test"));
 describe("vite-plugin-strip-comments test", () => {
   it("strip'em all", () => {
     const plugin = stripComments();
-    expect(plugin.transform(testSample, 'some/url')?.code).to.have.length.above(0);
+    expect(plugin.transform(testSample, "some/url")?.code).to.have.length.above(
+      0,
+    );
     expect(plugin.transform(testSample)?.code).to.have.length.above(0);
     // expect(plugin.transform(testSample)).to.be.true;
-    const pluginWithConfig = stripComments({ keep: 'none' });
-    expect(pluginWithConfig.transform(testSample)?.code).to.have.length.above(0);
-    expect(pluginWithConfig.transform(testSample, 'some/url')?.code).to.have.length.above(0);
+    const pluginWithConfig = stripComments({ keep: "none" });
+    expect(pluginWithConfig.transform(testSample)?.code).to.have.length.above(
+      0,
+    );
+    expect(pluginWithConfig.transform(testSample, "some/url")?.code).to.have
+      .length.above(0);
     // expect(plugin.transform(testSample)).to.be.true;
   });
 });

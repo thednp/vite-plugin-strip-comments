@@ -1,12 +1,17 @@
-declare function stripComments(): StripCommentsOutput;
+declare const stripComments: (cfg?: Partial<StripCommentsConfig>) => {
+    name: string;
+    transform(code: string, id?: string): {
+        code: string;
+        map: null;
+    } | undefined;
+};
 export default stripComments;
 
-declare type StripCommentsOutput = {
-    name: string;
-    transform: (text: string) => {
-        code: string;
-        map: string | null;
-    };
+/**
+ * @default 'istanbul'
+ */
+declare type StripCommentsConfig = {
+    keep: "none" | "legal" | "istanbul";
 };
 
 export { }
