@@ -1,0 +1,58 @@
+{
+  "name": "vite-plugin-strip-comments",
+  "version": "0.0.1",
+  "description": "🗃️ Vite plugin for stripping comments in production builds",
+  "main": "dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "source": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "pre-test": "pnpm clean-coverage",
+    "badges": "npx -p dependency-version-badge update-badge typescript vitest vite",
+    "prepublishOnly": "pnpm up && pnpm lint && pnpm format && pnpm build && pnpm badges",
+    "test": "pnpm pre-test && vitest --config vitest.config.mts",
+    "clean-coverage": "rm -rf coverage .nyc_output",
+    "format": "deno fmt src",
+    "lint": "pnpm lint:ts && pnpm check:ts",
+    "lint:ts": "deno lint src",
+    "fix:ts": "deno lint src --fix",
+    "check:ts": "tsc -noEmit",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thednp/vite-plugin-strip-comments.git"
+  },
+  "keywords": [
+    "vite",
+    "strip",
+    "comments"
+  ],
+  "author": "thednp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thednp/vite-plugin-strip-comments/issues"
+  },
+  "homepage": "https://github.com/thednp/vite-plugin-strip-comments#readme",
+  "devDependencies": {
+    "@types/node": "^20.17.3",
+    "@vitest/coverage-istanbul": "^2.1.4",
+    "playwright": "^1.48.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vite-plugin-dts": "^4.3.0",
+    "vitest": "^2.1.4"
+  },
+  "packageManager": "pnpm@9.10.0",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9.10.0",
+    "deno": ">=2.0.4"
+  }
+}
