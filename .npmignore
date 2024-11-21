@@ -1,0 +1,12 @@
+.nyc_output
+.vscode
+.github
+.gitignore
+node_modules
+experiments
+docs
+coverage
+src
+vite.config.mts
+vitest.config.mts
+test
