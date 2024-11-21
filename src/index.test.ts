@@ -16,25 +16,53 @@ console.log("test");
 /* @legal sample */ 
  /* @legal @license */  
 /* @license sample */
+
+/*
+* multi
+* line
+* comment
+*/
 requestAnimationFrame(console.log("test"));
 `;
 
 describe("vite-plugin-strip-comments test", () => {
-  it("strip'em all", () => {
-    const plugin = stripComments();
+  it("not work without params", () => {
+    const plugin = stripComments({ type: "none" });
     // @ts-expect-error - this is for testing purpose
-    expect(plugin.transform()?.code).to.be.undefined;
-    expect(plugin.transform(testSample, "some/url")?.code).to.have.length.above(
-      0,
+    expect(plugin.transform(), "no params found").to.be.undefined;
+    expect(plugin.transform("// sample comment"), "no id provided").to.equal(
+      "// sample comment",
     );
-    expect(plugin.transform(testSample)?.code).to.have.length.above(0);
-    // expect(plugin.transform(testSample)).to.be.true;
-    const pluginWithConfig = stripComments({ type: "none" });
-    expect(pluginWithConfig.transform(testSample)?.code).to.have.length.above(
-      0,
-    );
-    expect(pluginWithConfig.transform(testSample, "some/url")?.code).to.have
-      .length.above(0);
-    // expect(plugin.transform(testSample)).to.be.true;
+  });
+
+  it("strip all", () => {
+    const plugin = stripComments({ type: "none" });
+    const result = plugin.transform(testSample, "some/url");
+    // console.log("\n\n>> strip all\n", result);
+    expect(result, "all comments should be stripped").to.have.length.above(0)
+      .and.not.contain("istanbul").and.not.contain("@license").and.not.contain(
+        "@legal",
+      );
+  });
+
+  it("strip istanbul", () => {
+    const plugin = stripComments();
+    const result = plugin.transform(testSample, "some/url");
+    // console.log("\n\n>> strip istanbul\n", result);
+
+    expect(result, "defaults to { type: 'istanbul' }")
+      .to.have.length.above(0).and.not.contain("istanbul");
+  });
+
+  it("strip all except legal, also enforce 'post'", () => {
+    const plugin = stripComments({ type: "keep-legal", enforce: "post" });
+    const result = plugin.transform(testSample, "some/url");
+    // console.log("\n\n>> strip all except legal\n", result);
+
+    expect(plugin.enforce).to.equal("post");
+    expect(result).to.have.length.above(0)
+      .and.contain("@legal").and.contain("@license").and.not.contain(
+        "istanbul",
+      );
   });
 });

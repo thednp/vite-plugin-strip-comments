@@ -1,45 +1,69 @@
-export type StripCommentsOutput = {
+export type StripCommentsPlugin = {
   name: string;
+  enforce: "pre" | "post";
   transform: (
-    text: string,
-    id: string | undefined,
-  ) => undefined | { code: string; map: string | null };
+    code: string,
+    id?: string,
+  ) => string;
 };
 
-/**
- * @default 'istanbul'
- */
 export type StripCommentsConfig = {
   type: "none" | "keep-legal" | "istanbul";
+  enforce: "pre" | "post";
 };
 
-const replacements: Record<"none" | "keep-legal" | "istanbul", RegExp> = {
-  none: /((?=\/\*).*\*\/)|((?=((?<!\:)\/\/)).*(?=\n))/gm,
-  "keep-legal":
-    /(((?=(\/\*[\s\S](?!(\@legal|\@license)))).*\*\/)|((?=((?<!\:)\/\/[\s\S](?!(\@legal|\@license)))).*(?=\n)))/gm,
-  istanbul:
-    /(((?=(\/\*[\s\S]istanbul)).*\*\/)|((?=(\/\/[\s\S]istanbul)).*(?=\n)))/gm,
+const StripCommentsDefaultConfig: StripCommentsConfig = {
+  type: "istanbul",
+  enforce: "pre",
 };
 
-const stripComments = (cfg?: Partial<StripCommentsConfig>) => {
+const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
+  const config: Partial<StripCommentsConfig> = {};
+  config.type = ["none", "keep-legal", "istanbul"].some((x) => x === cfg.type)
+    ? cfg.type as StripCommentsConfig["type"]
+    : StripCommentsDefaultConfig.type;
+  config.enforce = ["pre", "post"].some((x) => x === cfg.enforce)
+    ? cfg.enforce as StripCommentsConfig["enforce"]
+    : StripCommentsDefaultConfig.enforce;
+
   return {
     name: "vite-plugin-strip-comments",
-    /* @ts-expect-error - it's just how Vite plugins work */
+    enforce: config.enforce,
     transform(code: string, id?: string) {
-      /* istanbul ignore else @preserve */
-      if (code?.length && (!id?.length || !id.includes("node_modules"))) {
-        const replacement = ["none", "legal", "istanbul"].some((x) =>
-            cfg?.type === x
-          )
-          ? replacements[cfg?.type as StripCommentsConfig["type"]]
-          : replacements["istanbul"];
-        return {
-          code: code.replace(replacement, ""),
-          map: null,
-        };
+      /* istanbul ignore if @preserve */
+      if (!id || id.includes("node_modules")) return code;
+      let result = code;
+
+      const matches = code.matchAll(
+        /\/\*[\s\S]*?\*\/|\/\/.*/gm,
+      );
+      const matchesArray = Array.from(matches);
+      let match: string;
+
+      for (let i = 0; i < matchesArray.length; i += 1) {
+        // capture first match
+        [match] = matchesArray[i];
+
+        switch (config.type) {
+          case "keep-legal":
+            if (!["@legal", "@license"].some((x) => match.includes(x))) {
+              result = result.replaceAll(match, "");
+            }
+            break;
+          case "istanbul":
+            if (match.includes("istanbul")) {
+              result = result.replaceAll(match, "");
+            }
+            break;
+          case "none":
+          default:
+            result = result.replaceAll(match, "");
+        }
       }
+
+      return result;
     },
-  } satisfies StripCommentsOutput;
+  } satisfies StripCommentsPlugin;
 };
 
 export default stripComments;

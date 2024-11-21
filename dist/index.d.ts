@@ -1,17 +1,13 @@
 declare const stripComments: (cfg?: Partial<StripCommentsConfig>) => {
     name: string;
-    transform(code: string, id?: string): {
-        code: string;
-        map: null;
-    } | undefined;
+    enforce: "pre" | "post";
+    transform(code: string, id?: string): string;
 };
 export default stripComments;
 
-/**
- * @default 'istanbul'
- */
 declare type StripCommentsConfig = {
     type: "none" | "keep-legal" | "istanbul";
+    enforce: "pre" | "post";
 };
 
 export { }

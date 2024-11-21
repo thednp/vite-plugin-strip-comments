@@ -31,6 +31,6 @@
       ],
     }
   },
-  "include": ["src/*", "src/**/*"],
+  "include": ["src/*"],
   "exclude": ["node_modules", "experiments", "coverage", "dist"],
 }
