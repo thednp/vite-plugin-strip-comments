@@ -29,17 +29,20 @@ describe("vite-plugin-strip-comments test", () => {
   it("not work without params", () => {
     const plugin = stripComments({ type: "none" });
     // @ts-expect-error - this is for testing purpose
-    expect(plugin.transform(), "no params found").to.be.undefined;
-    expect(plugin.transform("// sample comment"), "no id provided").to.equal(
-      "// sample comment",
-    );
+    expect(plugin.transform().code, "no params found").to.be.undefined;
+    expect(plugin.transform("// sample comment").code, "no id provided").to
+      .equal(
+        "// sample comment",
+      );
   });
 
   it("strip all", () => {
     const plugin = stripComments({ type: "none" });
-    const result = plugin.transform(testSample, "some/url");
-    // console.log("\n\n>> strip all\n", result);
-    expect(result, "all comments should be stripped").to.have.length.above(0)
+    const result = plugin.transform(testSample, "some/url.ts");
+    console.log("\n\n>> strip all\n", result.code);
+    expect(result.code, "all comments should be stripped").to.have.length.above(
+      0,
+    )
       .and.not.contain("istanbul").and.not.contain("@license").and.not.contain(
         "@legal",
       );
@@ -47,20 +50,20 @@ describe("vite-plugin-strip-comments test", () => {
 
   it("strip istanbul", () => {
     const plugin = stripComments();
-    const result = plugin.transform(testSample, "some/url");
+    const result = plugin.transform(testSample, "some/url.tsx");
     // console.log("\n\n>> strip istanbul\n", result);
 
-    expect(result, "defaults to { type: 'istanbul' }")
+    expect(result.code, "defaults to { type: 'istanbul' }")
       .to.have.length.above(0).and.not.contain("istanbul");
   });
 
   it("strip all except legal, also enforce 'post'", () => {
     const plugin = stripComments({ type: "keep-legal", enforce: "post" });
-    const result = plugin.transform(testSample, "some/url");
+    const result = plugin.transform(testSample, "some/url.js");
     // console.log("\n\n>> strip all except legal\n", result);
 
     expect(plugin.enforce).to.equal("post");
-    expect(result).to.have.length.above(0)
+    expect(result.code).to.have.length.above(0)
       .and.contain("@legal").and.contain("@license").and.not.contain(
         "istanbul",
       );

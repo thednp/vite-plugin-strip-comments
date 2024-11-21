@@ -1,12 +1,15 @@
 import { type Plugin } from "vite";
 
-export type StripCommentsPlugin = Plugin & {
+export type StripCommentsPlugin = Plugin<StripCommentsConfig> & {
   name: string;
   enforce: "pre" | "post" | undefined;
   transform: (
     code: string,
     id?: string,
-  ) => string;
+  ) => {
+    code: string;
+    map: string | null;
+  };
 };
 
 export type StripCommentsConfig = {
@@ -34,9 +37,11 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
   return {
     name: "vite-plugin-strip-comments",
     enforce: config.enforce,
-    transform(code: string, id?: string) {
+    transform(code: string, id?: string): { code: string; map: null } {
       /* istanbul ignore if @preserve */
-      if (!id || id.includes("node_modules")) return code;
+      if (!id || id.includes("node_modules") || !/\.([jt]sx?)$/.test(id)) {
+        return { code, map: null };
+      }
       let result = code;
       let match: string;
 
@@ -66,7 +71,7 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
         }
       }
 
-      return result;
+      return { code: result, map: null };
     },
   } satisfies StripCommentsPlugin;
 };

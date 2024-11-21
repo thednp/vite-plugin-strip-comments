@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import dts from "vite-plugin-dts";
+import strip from './src/index';
 
 const NAME = 'VitePluginStripComments';
 
@@ -20,6 +21,7 @@ export default defineConfig({
       copyDtsFiles: true,
       rollupTypes: true,
     }),
+    strip(),
   ],
   build: {
     minify: 'esbuild',
