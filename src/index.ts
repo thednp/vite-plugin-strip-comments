@@ -52,6 +52,7 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
             break;
           case "istanbul":
             if (match.includes("istanbul")) {
+              /* istanbul ignore next @preserve */
               result = result.replaceAll(match, "");
             }
             break;
