@@ -1,22 +1,24 @@
 const c = {
   type: "istanbul",
   enforce: "pre"
-}, m = (l = {}) => {
-  const r = {};
-  return r.type = ["none", "keep-legal", "istanbul"].some((e) => e === l.type) ? l.type : c.type, r.enforce = ["pre", "post"].some((e) => e === l.enforce) ? l.enforce : c.enforce, {
+}, p = (l = {}) => {
+  const s = {
+    type: ["none", "keep-legal", "istanbul"].some((e) => e === l.type) ? l.type : c.type,
+    enforce: ["pre", "post"].some((e) => e === l.enforce) ? l.enforce : c.enforce
+  };
+  return {
     name: "vite-plugin-strip-comments",
-    enforce: r.enforce,
+    enforce: s.enforce,
     transform(e, a) {
       if (!a || a.includes("node_modules")) return e;
-      let t = e;
-      const i = e.matchAll(
+      let t = e, n;
+      const o = Array.from(e.matchAll(
         /\/\*[\s\S]*?\*\/|\/\/.*/gm
-      ), o = Array.from(i);
-      let n;
-      for (let s = 0; s < o.length; s += 1)
-        switch ([n] = o[s], r.type) {
+      ));
+      for (let r = 0; r < o.length; r += 1)
+        switch ([n] = o[r], s.type) {
           case "keep-legal":
-            ["@legal", "@license"].some((p) => n.includes(p)) || (t = t.replaceAll(n, ""));
+            ["@legal", "@license"].some((i) => n.includes(i)) || (t = t.replaceAll(n, ""));
             break;
           case "istanbul":
             n.includes("istanbul") && (t = t.replaceAll(n, ""));
@@ -30,6 +32,6 @@ const c = {
   };
 };
 export {
-  m as default
+  p as default
 };
 //# sourceMappingURL=index.mjs.map

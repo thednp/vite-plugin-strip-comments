@@ -25,9 +25,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
 
-      # - name: Install Playwright
-      #   run: pnpm exec playwright install
-
       - name: Lint
         run: pnpm lint
 

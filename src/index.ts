@@ -1,6 +1,8 @@
-export type StripCommentsPlugin = {
+import { type Plugin } from "vite";
+
+export type StripCommentsPlugin = Plugin & {
   name: string;
-  enforce: "pre" | "post";
+  enforce: "pre" | "post" | undefined;
   transform: (
     code: string,
     id?: string,
@@ -9,7 +11,7 @@ export type StripCommentsPlugin = {
 
 export type StripCommentsConfig = {
   type: "none" | "keep-legal" | "istanbul";
-  enforce: "pre" | "post";
+  enforce: "pre" | "post" | undefined;
 };
 
 const StripCommentsDefaultConfig: StripCommentsConfig = {
@@ -18,13 +20,16 @@ const StripCommentsDefaultConfig: StripCommentsConfig = {
 };
 
 const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
-  const config: Partial<StripCommentsConfig> = {};
-  config.type = ["none", "keep-legal", "istanbul"].some((x) => x === cfg.type)
-    ? cfg.type as StripCommentsConfig["type"]
-    : StripCommentsDefaultConfig.type;
-  config.enforce = ["pre", "post"].some((x) => x === cfg.enforce)
-    ? cfg.enforce as StripCommentsConfig["enforce"]
-    : StripCommentsDefaultConfig.enforce;
+  const config: Partial<StripCommentsConfig> = {
+    type:
+      (["none", "keep-legal", "istanbul"].some((x) => x === cfg.type)
+        ? cfg.type
+        : StripCommentsDefaultConfig.type) as StripCommentsConfig["type"],
+    enforce:
+      (["pre", "post"].some((x) => x === cfg.enforce)
+        ? cfg.enforce
+        : StripCommentsDefaultConfig.enforce) as StripCommentsConfig["enforce"],
+  };
 
   return {
     name: "vite-plugin-strip-comments",
@@ -33,12 +38,11 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
       /* istanbul ignore if @preserve */
       if (!id || id.includes("node_modules")) return code;
       let result = code;
-
-      const matches = code.matchAll(
-        /\/\*[\s\S]*?\*\/|\/\/.*/gm,
-      );
-      const matchesArray = Array.from(matches);
       let match: string;
+
+      const matchesArray = Array.from(code.matchAll(
+        /\/\*[\s\S]*?\*\/|\/\/.*/gm,
+      ));
 
       for (let i = 0; i < matchesArray.length; i += 1) {
         // capture first match
