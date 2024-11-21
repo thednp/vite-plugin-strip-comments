@@ -23,6 +23,31 @@ console.log("test");
 * comment
 */
 requestAnimationFrame(console.log("test"));
+
+/**
+ * A global namespace for keyboard event keys.
+ */
+const keyboardEventKeys = {
+  Backspace: "Backspace", // 8
+  Tab: "Tab", // 9
+  Enter: "Enter", // 13
+  Shift: "Shift", // 16
+  Control: "Control", // 17
+  Alt: "Alt", // 18
+  Pause: "Pause", // 19
+  CapsLock: "CapsLock", // 20
+  Escape: "Escape", // 27
+  Scape: "Space", // 32
+  ArrowLeft: "ArrowLeft", // 37
+  ArrowUp: "ArrowUp", // 38
+  ArrowRight: "ArrowRight", // 39
+  ArrowDown: "ArrowDown", // 40
+  Insert: "Insert", // 45
+  Delete: "Delete", // 46
+  Meta: "Meta", // 91 windows key
+  ContextMenu: "ContextMenu", // 93
+  ScrollLock: "ScrollLock", // 145
+};
 `;
 
 describe("vite-plugin-strip-comments test", () => {
@@ -51,7 +76,7 @@ describe("vite-plugin-strip-comments test", () => {
   it("strip istanbul", () => {
     const plugin = stripComments();
     const result = plugin.transform(testSample, "some/url.tsx");
-    // console.log("\n\n>> strip istanbul\n", result);
+    // console.log("\n\n>> strip istanbul\n", result.code);
 
     expect(result.code, "defaults to { type: 'istanbul' }")
       .to.have.length.above(0).and.not.contain("istanbul");

@@ -46,28 +46,28 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
       let match: string;
 
       const matchesArray = Array.from(code.matchAll(
-        /\/\*[\s\S]*?\*\/|\/\/.*/gm,
+        /\/\*[\s\S]*?\*\/|\/\*\*.*?\*\/|\/\/.*(?=\n)?/gm,
       ));
 
       for (let i = 0; i < matchesArray.length; i += 1) {
-        // capture first match
+        // first match
         [match] = matchesArray[i];
 
         switch (config.type) {
           case "keep-legal":
             if (!["@legal", "@license"].some((x) => match.includes(x))) {
-              result = result.replaceAll(match, "");
+              result = result.replace(match, "");
             }
             break;
           case "istanbul":
             if (match.includes("istanbul")) {
               /* istanbul ignore next @preserve */
-              result = result.replaceAll(match, "");
+              result = result.replace(match, "");
             }
             break;
           case "none":
           default:
-            result = result.replaceAll(match, "");
+            result = result.replace(match, "");
         }
       }
 
