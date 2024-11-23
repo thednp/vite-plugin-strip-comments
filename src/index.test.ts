@@ -73,12 +73,12 @@ describe("vite-plugin-strip-comments test", () => {
       );
   });
 
-  it("strip istanbul", () => {
+  it("use no config", () => {
     const plugin = stripComments();
     const result = plugin.transform(testSample, "some/url.tsx");
     // console.log("\n\n>> strip istanbul\n", result.code);
 
-    expect(result.code, "defaults to { type: 'istanbul' }")
+    expect(result.code, "defaults to { type: 'keep-legal' }")
       .to.have.length.above(0).and.not.contain("istanbul");
   });
 

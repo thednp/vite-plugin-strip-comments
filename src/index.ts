@@ -3,6 +3,7 @@ import { type Plugin } from "vite";
 export type StripCommentsPlugin = Plugin<StripCommentsConfig> & {
   name: string;
   enforce: "pre" | "post" | undefined;
+  apply: "build";
   transform: (
     code: string,
     id?: string,
@@ -13,19 +14,19 @@ export type StripCommentsPlugin = Plugin<StripCommentsConfig> & {
 };
 
 export type StripCommentsConfig = {
-  type: "none" | "keep-legal" | "istanbul";
+  type: "none" | "keep-legal";
   enforce: "pre" | "post" | undefined;
 };
 
 const StripCommentsDefaultConfig: StripCommentsConfig = {
-  type: "istanbul",
+  type: "keep-legal",
   enforce: "pre",
 };
 
 const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
   const config: Partial<StripCommentsConfig> = {
     type:
-      (["none", "keep-legal", "istanbul"].some((x) => x === cfg.type)
+      (["none", "keep-legal"].some((x) => x === cfg.type)
         ? cfg.type
         : StripCommentsDefaultConfig.type) as StripCommentsConfig["type"],
     enforce:
@@ -37,6 +38,7 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
   return {
     name: "vite-plugin-strip-comments",
     enforce: config.enforce,
+    apply: "build",
     transform(code: string, id?: string): { code: string; map: null } {
       /* istanbul ignore if @preserve */
       if (!id || id.includes("node_modules") || !/\.([jt]sx?)$/.test(id)) {
@@ -56,12 +58,6 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
         switch (config.type) {
           case "keep-legal":
             if (!["@legal", "@license"].some((x) => match.includes(x))) {
-              result = result.replace(match, "");
-            }
-            break;
-          case "istanbul":
-            if (match.includes("istanbul")) {
-              /* istanbul ignore next @preserve */
               result = result.replace(match, "");
             }
             break;
