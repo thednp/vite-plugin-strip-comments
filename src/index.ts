@@ -28,11 +28,11 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
     type:
       (["none", "keep-legal"].some((x) => x === cfg.type)
         ? cfg.type
-        : StripCommentsDefaultConfig.type) as StripCommentsConfig["type"],
+        : StripCommentsDefaultConfig.type),
     enforce:
       (["pre", "post"].some((x) => x === cfg.enforce)
         ? cfg.enforce
-        : StripCommentsDefaultConfig.enforce) as StripCommentsConfig["enforce"],
+        : StripCommentsDefaultConfig.enforce),
   };
 
   return {
