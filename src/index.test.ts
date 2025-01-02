@@ -96,9 +96,10 @@ describe("vite-plugin-strip-comments test", () => {
       );
   });
 
-  it("retains URLs", ()=>{
+  it("retains URLs", () => {
     const plugin = stripComments({ type: "none" });
-    const result = plugin.transform(testSample);
-    expect(result.code, "URLs should have been retained").to.contain(`const response = await fetch("https://github.com/thednp/vite-plugin-strip-comments");`);
+    const result = plugin.transform(testSample, "urls.js");
+    expect(result.code, "URLs should have been retained")
+      .to.contain(`const response = await fetch("https://github.com/thednp/vite-plugin-strip-comments");`);
   })
 });
