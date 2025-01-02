@@ -48,7 +48,7 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
       let match: string;
 
       const matchesArray = Array.from(code.matchAll(
-        /\/\*[\s\S]*?\*\/|\/\*\*.*?\*\/|\/\/.*(?=\n)?/gm,
+        /\/\*[\s\S]*?\*\/|\/\*\*.*?\*\/|(?<!https?:)\/\/.*(?=\n)?/gm,
       ));
 
       for (let i = 0; i < matchesArray.length; i += 1) {

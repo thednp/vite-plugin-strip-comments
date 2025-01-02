@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-strip-comments",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "🗃️ Vite plugin for stripping comments in production builds",
   "main": "dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/thednp/vite-plugin-strip-comments#readme",
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.10.3",
     "@vitest/coverage-istanbul": "^2.1.8",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
