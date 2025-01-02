@@ -24,6 +24,8 @@ console.log("test");
 */
 requestAnimationFrame(console.log("test"));
 
+const response = await fetch("https://github.com/thednp/vite-plugin-strip-comments");
+
 /**
  * A global namespace for keyboard event keys.
  */
@@ -93,4 +95,10 @@ describe("vite-plugin-strip-comments test", () => {
         "istanbul",
       );
   });
+
+  it("retains URLs", ()=>{
+    const plugin = stripComments({ type: "none" });
+    const result = plugin.transform(testSample);
+    expect(result.code, "URLs should have been retained").to.contain(`const response = await fetch("https://github.com/thednp/vite-plugin-strip-comments");`);
+  })
 });
