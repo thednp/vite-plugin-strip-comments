@@ -1,9 +1,29 @@
 name: ci
-on: push
+on:
+  push:
+    # [push, pull_request]
+    # update README badge only if the README file changes
+    # or if the package.json file changes, or this file changes
+    branches:
+      - master
+    paths:
+      - src
+      - package.json
+      - .github/workflows/ci.yml
+  pull_request:
+    # [push, pull_request]
+    # update README badge only if the README file changes
+    # or if the package.json file changes, or this file changes
+    branches:
+      - master
+    paths:
+      - src
+      - package.json
+      - .github/workflows/ci.yml
 jobs:
   test:
-    runs-on: ubuntu-20.04
-    name: Test on Node 20
+    runs-on: ubuntu-24.04
+    name: Test on Node
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,7 +39,7 @@ jobs:
       - name: Node Setup
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
 
       - name: Install Dependencies

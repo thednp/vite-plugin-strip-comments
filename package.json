@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-strip-comments",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "🗃️ Vite plugin for stripping comments in production builds",
   "main": "dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -15,8 +15,8 @@
   "scripts": {
     "pre-test": "pnpm clean-coverage",
     "badges": "npx -p dependency-version-badge update-badge typescript vitest vite",
-    "prepublishOnly": "pnpm up && pnpm lint && pnpm format && pnpm build && pnpm badges",
-    "test": "pnpm pre-test && vitest --config vitest.config.mts",
+    "prepublishOnly": "pnpm up --latest && pnpm lint && pnpm format && pnpm build && pnpm badges",
+    "test": "pnpm pre-test && vitest --config vitest.config.ts",
     "clean-coverage": "rm -rf coverage .nyc_output",
     "format": "deno fmt src",
     "lint": "pnpm lint:ts && pnpm check:ts",
@@ -41,12 +41,12 @@
   },
   "homepage": "https://github.com/thednp/vite-plugin-strip-comments#readme",
   "devDependencies": {
-    "@types/node": "^22.10.6",
-    "@vitest/coverage-istanbul": "^2.1.8",
-    "typescript": "^5.7.3",
-    "vite": "^5.4.11",
-    "vite-plugin-dts": "^4.5.0",
-    "vitest": "^2.1.8"
+    "@types/node": "^22.15.24",
+    "@vitest/coverage-istanbul": "^3.1.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3.1.4"
   },
   "packageManager": "pnpm@9.10.0",
   "engines": {
