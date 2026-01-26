@@ -14,7 +14,7 @@ export type StripCommentsPlugin = Plugin<StripCommentsConfig> & {
 };
 
 export type StripCommentsConfig = {
-  type: "none" | "keep-legal";
+  type: "none" | "keep-legal" | "keep-jsdoc";
   enforce: "pre" | "post" | undefined;
 };
 
@@ -25,14 +25,12 @@ const StripCommentsDefaultConfig: StripCommentsConfig = {
 
 const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
   const config: Partial<StripCommentsConfig> = {
-    type:
-      (["none", "keep-legal"].some((x) => x === cfg.type)
-        ? cfg.type
-        : StripCommentsDefaultConfig.type),
-    enforce:
-      (["pre", "post"].some((x) => x === cfg.enforce)
-        ? cfg.enforce
-        : StripCommentsDefaultConfig.enforce),
+    type: ["none", "keep-legal", "keep-jsdoc"].some((x) => x === cfg.type)
+      ? cfg.type
+      : StripCommentsDefaultConfig.type,
+    enforce: ["pre", "post"].some((x) => x === cfg.enforce)
+      ? cfg.enforce
+      : StripCommentsDefaultConfig.enforce,
   };
 
   return {
@@ -47,17 +45,29 @@ const stripComments = (cfg: Partial<StripCommentsConfig> = {}) => {
       let result = code;
       let match: string;
 
-      const matchesArray = Array.from(code.matchAll(
-        /\/\*[\s\S]*?\*\/|\/\*\*.*?\*\/|(?<!https?:)\/\/.*(?=\n)?/gm,
-      ));
+      const matchesArray = Array.from(
+        code.matchAll(
+          /\/\*[\s\S]*?\*\/|\/\*\*.*?\*\/|(?<!https?:)\/\/.*(?=\n)?/gm,
+        ),
+      );
 
       for (let i = 0; i < matchesArray.length; i += 1) {
         // first match
         [match] = matchesArray[i];
+        const isJSDoc = match.startsWith("/**");
+        const isLegal = ["@legal", "@license", "@copyright"].some((x) =>
+          match.includes(x)
+        );
+        // console.log({ isJSDoc, isLegal, match });
 
         switch (config.type) {
+          case "keep-jsdoc":
+            if (!isJSDoc && !isLegal) {
+              result = result.replace(match, "");
+            }
+            break;
           case "keep-legal":
-            if (!["@legal", "@license"].some((x) => match.includes(x))) {
+            if (!isLegal) {
               result = result.replace(match, "");
             }
             break;

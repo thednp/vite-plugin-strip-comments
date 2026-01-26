@@ -1,6 +1,8 @@
 {
   "name": "vite-plugin-strip-comments",
-  "version": "0.0.6",
+  "version": "0.0.7",
+  "author": "thednp",
+  "license": "MIT",
   "description": "🗃️ Vite plugin for stripping comments in production builds",
   "main": "dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -31,22 +33,24 @@
   },
   "keywords": [
     "vite",
+    "rollup",
+    "rolldown",
+    "tsup",
+    "tsdown",
     "strip",
     "comments"
   ],
-  "author": "thednp",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/thednp/vite-plugin-strip-comments/issues"
   },
   "homepage": "https://github.com/thednp/vite-plugin-strip-comments#readme",
   "devDependencies": {
-    "@types/node": "^22.15.24",
-    "@vitest/coverage-istanbul": "^3.1.4",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5",
+    "@types/node": "^25.0.10",
+    "@vitest/coverage-istanbul": "^4.0.18",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.1.4"
+    "vitest": "^4.0.18"
   },
   "packageManager": "pnpm@9.10.0",
   "engines": {

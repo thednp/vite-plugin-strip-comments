@@ -10,7 +10,7 @@ declare const stripComments: (cfg?: Partial<StripCommentsConfig>) => {
 export default stripComments;
 
 declare type StripCommentsConfig = {
-    type: "none" | "keep-legal";
+    type: "none" | "keep-legal" | "keep-jsdoc";
     enforce: "pre" | "post" | undefined;
 };
 

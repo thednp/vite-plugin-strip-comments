@@ -1,20 +1,22 @@
 import { describe, expect, it } from "vitest";
-import stripComments from "../src/index";
+import stripComments from "../src/index.ts";
 
 const testSample = `
 // sample text
-//  sample text 1 
- // sample @legal 
-// @legal sample  
+//  sample text 1
+ // sample @legal
+// @legal sample
 console.log("test");
- // @license sample mm 
+ // @license sample mm
+
+ // @copyright sample mm
 
 /* istanbul ignore next @preserve */ some other code
- /* istanbul ignore next */ 
+ /* istanbul ignore next */
 
 /* sample comment */ other code
-/* @legal sample */ 
- /* @legal @license */  
+/* @legal sample */
+ /* @legal @license */
 /* @license sample */
 
 /*
@@ -51,6 +53,13 @@ const keyboardEventKeys = {
   ContextMenu: "ContextMenu", // 93
   ScrollLock: "ScrollLock", // 145
 };
+
+if (!window.YT?.Player) {
+  const el = document.createElement("script");
+  el.src = "//www.youtube.com/iframe_api";
+  document.head.appendChild(el);
+  await new Promise((resolve) => {}
+}
 `;
 
 describe("vite-plugin-strip-comments test", () => {
@@ -58,22 +67,21 @@ describe("vite-plugin-strip-comments test", () => {
     const plugin = stripComments({ type: "none" });
     // @ts-expect-error - this is for testing purpose
     expect(plugin.transform().code, "no params found").to.be.undefined;
-    expect(plugin.transform("// sample comment").code, "no id provided").to
-      .equal(
-        "// sample comment",
-      );
+    expect(
+      plugin.transform("// sample comment").code,
+      "no id provided",
+    ).to.equal("// sample comment");
   });
 
   it("strip all", () => {
     const plugin = stripComments({ type: "none" });
     const result = plugin.transform(testSample, "some/url.ts");
     console.log("\n\n>> strip all\n", result.code);
-    expect(result.code, "all comments should be stripped").to.have.length.above(
-      0,
-    )
-      .and.not.contain("istanbul").and.not.contain("@license").and.not.contain(
-        "@legal",
-      );
+    expect(result.code, "all comments should be stripped")
+      .to.have.length.above(0)
+      .and.not.contain("istanbul")
+      .and.not.contain("@license")
+      .and.not.contain("@legal");
   });
 
   it("use no config", () => {
@@ -82,7 +90,21 @@ describe("vite-plugin-strip-comments test", () => {
     // console.log("\n\n>> strip istanbul\n", result.code);
 
     expect(result.code, "defaults to { type: 'keep-legal' }")
-      .to.have.length.above(0).and.not.contain("istanbul");
+      .to.have.length.above(0)
+      .and.not.contain("istanbul");
+  });
+
+  it("strip any non-legal or non-jsDoc", () => {
+    const plugin = stripComments({ type: "keep-jsdoc" });
+    const result = plugin.transform(testSample, "some/url.js");
+    console.log("\n\n>> strip all except legal/jsdoc\n", result);
+
+    expect(result.code)
+      .to.have.length.above(0)
+      .and.contain("@legal")
+      .and.contain("@license")
+      .and.contain("A global namespace for keyboard event keys.")
+      .and.not.contain("istanbul");
   });
 
   it("strip all except legal, also enforce 'post'", () => {
@@ -91,18 +113,19 @@ describe("vite-plugin-strip-comments test", () => {
     // console.log("\n\n>> strip all except legal\n", result);
 
     expect(plugin.enforce).to.equal("post");
-    expect(result.code).to.have.length.above(0)
-      .and.contain("@legal").and.contain("@license").and.not.contain(
-        "istanbul",
-      );
+    expect(result.code)
+      .to.have.length.above(0)
+      .and.contain("@legal")
+      .and.contain("@license")
+      .and.not.contain("istanbul");
   });
 
   it("retains URLs", () => {
     const plugin = stripComments({ type: "none" });
     const result = plugin.transform(testSample, "urls.js");
-    expect(result.code, "URLs should have been retained")
-      .to.contain(
-        `const response = await fetch("https://github.com/thednp/vite-plugin-strip-comments");`,
-      );
+    console.log(result);
+    expect(result.code, "URLs should have been retained").to.contain(
+      `const response = await fetch("https://github.com/thednp/vite-plugin-strip-comments");`,
+    );
   });
 });

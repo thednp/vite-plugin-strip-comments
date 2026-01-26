@@ -1,5 +1,5 @@
 {
-   // https://janessagarrow.com/blog/typescript-and-esbuild/
+  // https://janessagarrow.com/blog/typescript-and-esbuild/
   "compilerOptions": {
     "lib": ["DOM", "ESNext", "DOM.Iterable"],
     // "types": ["vite", "vite/client"],
@@ -22,14 +22,13 @@
     "noImplicitReturns": true,
     "removeComments": false,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "checkJs": true,
     "skipLibCheck": true, // allows dts-bundle-generator to import from package.json
     "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-    }
+      "~/*": ["./src/*"],
+    },
   },
   "include": ["src/*"],
   "exclude": ["node_modules", "experiments", "coverage", "dist"],
