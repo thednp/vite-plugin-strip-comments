@@ -2,7 +2,7 @@
  * Strip comments plugin for Vite
  * @author thednp
  * @license MIT
- * @version 0.0.8
+ * @version 0.0.9
  * @see https://github.com/thednp/vite-plugin-strip-comments#readme
  */
 
@@ -54,7 +54,7 @@ const stripComments = (config = {}) => {
 				code,
 				map: null
 			};
-			const LEGAL_REGEX = /\/\*!\s*|@(?:legal|license|copyright)\b/;
+			const LEGAL_REGEX = /\/\*!\s*|\/\/!\s*|@(?:legal|license|copyright)\b/;
 			const COMMENT_REGEX = /\/\*[\s\S]*?\*\/|\/\*\*.*?\*\/|(?<!https?:)\/\/.*(?=\n)?/gm;
 			let result = code;
 			const matches = code.matchAll(COMMENT_REGEX);

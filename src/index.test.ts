@@ -13,6 +13,7 @@ console.log("test");
  // @copyright sample mm
 
  /*! a legal note sample mm */
+ //! another kind of legal note sample mm
 
 /* istanbul ignore next @preserve */ some other code
  /* istanbul ignore next */
@@ -105,15 +106,17 @@ describe("vite-plugin-strip-comments test", () => {
 
     expect(
       elapsed,
-      // `strip of "some/url.js" took:' ${elapsed}`,
+      `strip of "some/url.js" took: ${elapsed} ms`,
     ).toBeLessThanOrEqual(0.075);
 
-    // console.log('strip of "some/url.js" took:', elapsed);
+    // console.log(`strip of "some/url.js" took: ${elapsed} ms`);
     // console.log("\n\n>> strip all except legal/jsdoc\n", result);
     expect(result.code)
       .to.have.length.above(0)
       .and.contain("@legal")
       .and.contain("@license")
+      .and.contain("legal note sample")
+      .and.contain("another kind of legal note sample")
       .and.contain("A global namespace for keyboard event keys.")
       .and.not.contain("istanbul");
   });
@@ -129,6 +132,7 @@ describe("vite-plugin-strip-comments test", () => {
       .and.contain("@legal")
       .and.contain("@license")
       .and.contain("legal note sample")
+      .and.contain("another kind of legal note sample")
       .and.not.contain("istanbul");
   });
 

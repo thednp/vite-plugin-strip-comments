@@ -67,7 +67,7 @@ const stripComments = (config: Partial<StripCommentsConfig> = {}) => {
       if (!id || id.includes("node_modules") || !/\.([jt]sx?)$/.test(id)) {
         return { code, map: null };
       }
-      const LEGAL_REGEX = /\/\*!\s*|@(?:legal|license|copyright)\b/;
+      const LEGAL_REGEX = /\/\*!\s*|\/\/!\s*|@(?:legal|license|copyright)\b/;
       const COMMENT_REGEX =
         /\/\*[\s\S]*?\*\/|\/\*\*.*?\*\/|(?<!https?:)\/\/.*(?=\n)?/gm;
       let result = code;

@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-strip-comments",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "thednp",
   "license": "MIT",
   "description": "🗃️ Vite plugin for stripping comments in production builds",
