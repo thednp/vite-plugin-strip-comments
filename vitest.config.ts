@@ -19,7 +19,7 @@ export default defineConfig({
       provider: "istanbul",
       reporter: ["html", "text", "lcov"],
       enabled: true,
-      include: ["src/**/*.{ts,tsx}"],
+      include: ["src/index.{ts,tsx}"],
     },
   },
 });

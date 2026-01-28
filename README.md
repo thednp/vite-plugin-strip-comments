@@ -10,7 +10,9 @@
 
 A very simple Vite plugin for stripping comments in your production code. Some comments just don't get removed no matter what minify options you set, especially `/* istanbul ignore */` flags. Keep in mind this is experimental, please **use with caution**.
 
-> NOTE - this plugin should be compatible with rollup, rolldown, tsup and tsdown as well.
+> NOTES
+- this plugin should be compatible with rollup, rolldown, tsup and tsdown as well.
+- make sure to disable other plugins or options to strip comment to prevent overprocessing and long build times.
 
 ## Install
 
@@ -32,20 +34,24 @@ deno add -D npm:vite-plugin-strip-comments@latest
 
 ## Usage
 
+### Configuration
 ```ts
-// vite.config.mts
-import stripComments from 'vite-plugin-strip-comments';
+// vite.config.ts
+// tsdown.config.ts
+// rolldown.config.ts
+import { defineConfig } from "vite"; // or tsdown | rolldown
+import strip from 'vite-plugin-strip-comments';
 
 export default defineConfig({
   plugins: [
     // ... other plugins
-    stripComments({ type: 'none' }),
-    // 'none' means to keep no comments
+    strip(),
+    // using default configuration
   ],
 });
 ```
 
-**Options**
+### Options
 
 * `type`: "none" | "keep-jsdoc" | "keep-legal" (default) - changes the behavior of the transform function
   * **none** removes all comments

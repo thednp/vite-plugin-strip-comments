@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { performanceNow } from "./performanceNow.ts";
 import stripComments from "../src/index.ts";
 
 const testSample = `
@@ -10,6 +11,8 @@ console.log("test");
  // @license sample mm
 
  // @copyright sample mm
+
+ /*! a legal note sample mm */
 
 /* istanbul ignore next @preserve */ some other code
  /* istanbul ignore next */
@@ -76,7 +79,7 @@ describe("vite-plugin-strip-comments test", () => {
   it("strip all", () => {
     const plugin = stripComments({ type: "none" });
     const result = plugin.transform(testSample, "some/url.ts");
-    console.log("\n\n>> strip all\n", result.code);
+    // console.log("\n\n>> strip all\n", result.code);
     expect(result.code, "all comments should be stripped")
       .to.have.length.above(0)
       .and.not.contain("istanbul")
@@ -96,9 +99,17 @@ describe("vite-plugin-strip-comments test", () => {
 
   it("strip any non-legal or non-jsDoc", () => {
     const plugin = stripComments({ type: "keep-jsdoc" });
+    const startTime = performanceNow();
     const result = plugin.transform(testSample, "some/url.js");
-    console.log("\n\n>> strip all except legal/jsdoc\n", result);
+    const elapsed = performanceNow() - startTime;
 
+    expect(
+      elapsed,
+      // `strip of "some/url.js" took:' ${elapsed}`,
+    ).toBeLessThanOrEqual(0.065);
+
+    // console.log('strip of "some/url.js" took:', elapsed);
+    // console.log("\n\n>> strip all except legal/jsdoc\n", result);
     expect(result.code)
       .to.have.length.above(0)
       .and.contain("@legal")
@@ -117,13 +128,14 @@ describe("vite-plugin-strip-comments test", () => {
       .to.have.length.above(0)
       .and.contain("@legal")
       .and.contain("@license")
+      .and.contain("legal note sample")
       .and.not.contain("istanbul");
   });
 
   it("retains URLs", () => {
     const plugin = stripComments({ type: "none" });
     const result = plugin.transform(testSample, "urls.js");
-    console.log(result);
+    // console.log(result);
     expect(result.code, "URLs should have been retained").to.contain(
       `const response = await fetch("https://github.com/thednp/vite-plugin-strip-comments");`,
     );
