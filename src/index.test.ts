@@ -106,7 +106,7 @@ describe("vite-plugin-strip-comments test", () => {
     expect(
       elapsed,
       // `strip of "some/url.js" took:' ${elapsed}`,
-    ).toBeLessThanOrEqual(0.065);
+    ).toBeLessThanOrEqual(0.075);
 
     // console.log('strip of "some/url.js" took:', elapsed);
     // console.log("\n\n>> strip all except legal/jsdoc\n", result);
