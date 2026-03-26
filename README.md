@@ -4,9 +4,6 @@
 [![ci](https://github.com/thednp/vite-plugin-strip-comments/actions/workflows/ci.yml/badge.svg)](https://github.com/thednp/vite-plugin-strip-comments/actions/workflows/ci.yml)
 [![NPM Version](https://img.shields.io/npm/v/vite-plugin-strip-comments.svg)](https://www.npmjs.com/package/vite-plugin-strip-comments)
 [![NPM Downloads](https://img.shields.io/npm/dm/vite-plugin-strip-comments.svg)](http://npm-stat.com/charts.html?package=vite-plugin-strip-comments)
-[![typescript version](https://img.shields.io/badge/typescript-5.9.3-brightgreen)](https://www.typescriptlang.org/)
-[![vitest version](https://img.shields.io/badge/vitest-4.0.18-brightgreen)](https://vitest.dev/)
-[![vite version](https://img.shields.io/badge/vite-7.3.1-brightgreen)](https://github.com/vitejs)
 
 A very simple Vite plugin for stripping comments in your production code. Some comments just don't get removed no matter what minify options you set, especially `/* istanbul ignore */` flags. Keep in mind this is experimental, please **use with caution**.
 

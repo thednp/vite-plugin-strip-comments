@@ -64,7 +64,10 @@ const stripComments = (config: Partial<StripCommentsConfig> = {}) => {
     apply: "build",
     transform(code: string, id?: string): { code: string; map: null } {
       /* istanbul ignore if @preserve */
-      if (!id || id.includes("node_modules") || !/\.([jt]sx?)$/.test(id)) {
+      if (
+        !id || id.includes("node_modules") || !/\.([jt]sx?)$/.test(id) ||
+        id === "\x00rolldown/runtime.js"
+      ) {
         return { code, map: null };
       }
       const LEGAL_REGEX = /\/\*!\s*|\/\/!\s*|@(?:legal|license|copyright)\b/;

@@ -2,10 +2,9 @@
  * Strip comments plugin for Vite
  * @author thednp
  * @license MIT
- * @version 0.0.9
+ * @version 0.0.10
  * @see https://github.com/thednp/vite-plugin-strip-comments#readme
  */
-
 //#region src/index.ts
 const StripCommentsDefaultConfig = {
 	type: "keep-legal",
@@ -50,7 +49,7 @@ const stripComments = (config = {}) => {
 		enforce: cfg.enforce,
 		apply: "build",
 		transform(code, id) {
-			if (!id || id.includes("node_modules") || !/\.([jt]sx?)$/.test(id)) return {
+			if (!id || id.includes("node_modules") || !/\.([jt]sx?)$/.test(id) || id === "\0rolldown/runtime.js") return {
 				code,
 				map: null
 			};
@@ -81,8 +80,7 @@ const stripComments = (config = {}) => {
 		}
 	};
 };
-var src_default = stripComments;
-
 //#endregion
-module.exports = src_default;
+module.exports = stripComments;
+
 //# sourceMappingURL=index.cjs.map

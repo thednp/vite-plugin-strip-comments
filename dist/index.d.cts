@@ -2,7 +2,7 @@
  * Strip comments plugin for Vite
  * @author thednp
  * @license MIT
- * @version 0.0.9
+ * @version 0.0.10
  * @see https://github.com/thednp/vite-plugin-strip-comments#readme
  */
 import { Plugin } from "vite";
